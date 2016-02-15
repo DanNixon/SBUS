@@ -2,22 +2,6 @@
 #include <Arduino.h>
 
 void SBUS::begin() {
-	SBUS::begin(true);
-}
-
-void SBUS::begin(bool useTimer) {
-	if (useTimer) {
-		noInterrupts();
-		TCCR2A  = 0;
-		TCCR2B  = 0;
-		TCNT2   = 0;
-		OCR2A   = 249;
-		TCCR2A |= (1 << WGM21);
-		TCCR2B |= (1 << CS22);
-		TIMSK2 |= (1 << OCIE2A);
-		interrupts();
-	}
-
 	for (byte i = 0; i<18; i++) {
 		_channels[i]      = 0;
 	}
@@ -27,7 +11,7 @@ void SBUS::begin(bool useTimer) {
 	_decoderErrorFrames = 0;
 	_failsafe           = SBUS_FAILSAFE_INACTIVE;
 
-	_serial.begin(100000, SERIAL_8E2);
+	_serial.begin(100000, SERIAL_8E1);
 }
 
 void SBUS::process() {

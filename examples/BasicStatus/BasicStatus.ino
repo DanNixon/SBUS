@@ -1,22 +1,25 @@
 #include <SBUS.h>
+#include <TimerThree.h>
+
 SBUS sbus(Serial3);
 
 void setup()
 {
+  Timer3.initialize(1000);
+  Timer3.attachInterrupt(up);
   sbus.begin();
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println("SBUS Status");
 }
 
-// this is timer2, which triggers ever 1ms and processes the incoming SBUS datastream
-ISR(TIMER2_COMPA_vect)
+void up()
 {
   sbus.process();
 }
 
 void loop()
 {
-  delay(300);
+  delay(1000);
   printSBUSStatus();
 }
 
@@ -73,7 +76,4 @@ void printSBUSStatus()
   Serial.print(sbus.getLostFrames());
   Serial.print(" / ");
   Serial.println(sbus.getDecoderErrorFrames());
-
-  Serial.print("Time diff: ");
-  Serial.println(millis() - sbus.getLastTime());
 }

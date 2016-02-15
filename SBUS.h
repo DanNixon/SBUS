@@ -8,12 +8,10 @@
 #define SBUS_STARTBYTE         0x0f
 #define SBUS_ENDBYTE           0x00
 
-
 class SBUS {
 	public:
 		SBUS(HardwareSerial & serial) : _serial (serial) {}
 		void begin();
-		void begin(bool useTimer);
 		void process();
 		int getChannel(int channel);
 		int getNormalizedChannel(int channel);
@@ -23,6 +21,7 @@ class SBUS {
 		long getLostFrames();
 		long getDecoderErrorFrames();
 		long long getLastTime();
+
 	private:
 		HardwareSerial & _serial;
 		int _channels[18];
